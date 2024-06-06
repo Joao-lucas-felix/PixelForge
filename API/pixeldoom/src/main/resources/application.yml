@@ -1,0 +1,21 @@
+server:
+  error:
+    include-stacktrace: never
+spring:
+  application:
+    name: pixelforge
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/pixeldoom?useTimezone=true&serverTimezone=UTC
+    username: root
+    password: admin
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    open-in-view: false
+
+spring-doc:
+  pathsToMatch:
+    /hello
+
