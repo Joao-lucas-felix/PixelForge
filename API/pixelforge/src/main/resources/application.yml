@@ -15,7 +15,14 @@ spring:
     show-sql: false
     open-in-view: false
 
-spring-doc:
+springdoc:
   pathsToMatch:
-    /hello
+    - /auth/**
+    - /api/**/v1/**
+    - /hello
 
+security:
+  jwt:
+    private-key: 'classpath:app.key'
+    public-key: 'classpath:app.pubkey'
+    expire-length: 360000

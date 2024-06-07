@@ -27,8 +27,9 @@ public class User implements UserDetails, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-    @Column(unique = true)
+    private String id;
+
+    @Column(name = "user_name", unique = true)
     private String username;
     @Column(name = "full_name")
     private String fullName;

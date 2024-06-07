@@ -23,12 +23,12 @@ public class Permission implements GrantedAuthority, Serializable {
     private Long id;
 
     @Column
-    private Description description;
+    private String description;
 
 
     @Override
     public String getAuthority() {
-        return this.description.name();
+        return this.description;
     }
 
     public enum Description {
