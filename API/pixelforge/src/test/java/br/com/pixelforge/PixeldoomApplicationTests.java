@@ -1,4 +1,4 @@
-package br.com.pixeldoom;
+package br.com.pixelforge;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

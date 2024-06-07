@@ -1,4 +1,4 @@
-package br.com.pixeldoom.Controllers;
+package br.com.pixelforge.controllers;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
