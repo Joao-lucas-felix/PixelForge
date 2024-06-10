@@ -40,15 +40,15 @@ public class AdminUserForDevConfiguration implements CommandLineRunner{
     @Override
     public void run(String... args) throws Exception {
         var roleAdmin = repositoryPermission.findByDescription(Permission.Description.ADMIM.name());
-        var userAdmin = repository.findByUsername("admin");
+        var userAdmin = repository.findByUsername("admin2");
         userAdmin.ifPresentOrElse(
                 user -> {
                     logger.info("admin ja existe");
                 },
                 () -> {
                     var user = new User();
-                    user.setUsername("admin");
-                    user.setFullName("admin");
+                    user.setUsername("admin2");
+                    user.setFullName("admin2");
                     user.setPassword(getPasswordEncoder().encode("admin"));
                     user.setAccountNonExpired(true);
                     user.setAccountNonLocked(true);

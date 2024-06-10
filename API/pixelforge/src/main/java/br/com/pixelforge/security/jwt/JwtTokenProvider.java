@@ -2,6 +2,8 @@ package br.com.pixelforge.security.jwt;
 
 
 import br.com.pixelforge.domain.DTOs.TokenDto;
+import br.com.pixelforge.domain.User;
+import br.com.pixelforge.repositories.UserRepository;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -22,6 +24,7 @@ import java.security.interfaces.RSAPublicKey;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class JwtTokenProvider {
@@ -33,6 +36,8 @@ public class JwtTokenProvider {
     private Long validityInMiliseconds;
     @Autowired
     private UserDetailsService userDetailsService;
+    @Autowired
+    private UserRepository userRepository;
 
     public JwtEncoder getEncoder(){
         JWK jwk = new RSAKey.Builder(this.publicKey).privateKey(this.privateKey).build();
@@ -44,23 +49,23 @@ public class JwtTokenProvider {
         return NimbusJwtDecoder.withPublicKey(this.publicKey).build();
     }
 
-    public TokenDto createAccessToke(String username, List<String> roles)
+    public TokenDto createAccessToke(String userId, List<String> roles)
     {
         Date now = new Date();
         Date validity = new Date(now.getTime()+validityInMiliseconds);
-        var accessToken = getAccessToken(username, now, validity);
+        var accessToken = getAccessToken(userId, now, validity);
         return new
-                TokenDto(username,true, now, validity, accessToken);
+                TokenDto(userId,true, now, validity, accessToken);
     }
 
-    private String getAccessToken(String username, Date now, Date validity) {
+    private String getAccessToken(String userId, Date now, Date validity) {
         String issueUrl = ServletUriComponentsBuilder
                 .fromCurrentContextPath().build().toUriString();
 
         var claims = JwtClaimsSet.builder()
                 .issuer("pixelforge")
                 .issuedAt(Instant.ofEpochMilli(now.getTime()))
-                .subject(username)
+                .subject(userId)
                 .expiresAt(Instant.ofEpochMilli(validity.getTime()))
                 .build();
 
@@ -71,9 +76,10 @@ public class JwtTokenProvider {
 
     public Authentication getAutentication(String token){
         Jwt decode = getDecoder().decode(token);
-
         UserDetails userDetails = this.userDetailsService
-                .loadUserByUsername(decode.getClaim("subject"));
+                .loadUserByUsername(
+                        userRepository.findById(UUID.fromString(decode.getClaim("sub")))
+                            .orElseThrow().getUsername());
         return new UsernamePasswordAuthenticationToken
                 (userDetails, "", userDetails.getAuthorities());
     }
@@ -87,7 +93,7 @@ public class JwtTokenProvider {
     }
 
     public boolean validateToken(String token){
-        var expiresAt = getDecoder().decode(token).getClaim("expiresAt");
+        var expiresAt = getDecoder().decode(token).getClaim("exp");
         try {
             if ( Date.from((Instant) expiresAt).before(new Date()) ) {
                 return false;

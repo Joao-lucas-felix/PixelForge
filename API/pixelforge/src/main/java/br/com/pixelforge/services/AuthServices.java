@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 @Service
@@ -39,11 +40,12 @@ public class AuthServices {
             User user = userRepository.findByUsername(dto.getUsername())
                     .orElseThrow(() -> new BadCredentialsException("User or password invalid!")
             );
-            TokenDto accessToken = tokenProvider.createAccessToke(user.getUsername(), user.getRoles());
+            TokenDto accessToken = tokenProvider.createAccessToke(user.getId().toString(), user.getRoles());
 
 
             //Cdoigo para pegar a role de um user pelo username.
-            userRepository.findByUsername(tokenProvider.getDecoder().decode(accessToken.getAccessToken()).getClaim("sub"))
+            userRepository.findById
+                            (UUID.fromString(tokenProvider.getDecoder().decode(accessToken.getAccessToken()).getClaim("sub")))
                     .ifPresent((user1 -> {user1.getPermissions()
                             .forEach(permission -> logger.info("User Role: "+ permission.getDescription()));}));
 
