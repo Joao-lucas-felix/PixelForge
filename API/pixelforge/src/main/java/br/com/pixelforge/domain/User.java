@@ -10,10 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -53,6 +50,9 @@ public class User implements UserDetails, Serializable {
             inverseJoinColumns = {@JoinColumn(name = "id_permission")}
     )
     private List<Permission> permissions;
+
+    @OneToMany(mappedBy = "user")
+    private Set<PixelArt> pixelArts;
 
     public List<String> getRoles(){
         List<String> roles = new ArrayList<>();

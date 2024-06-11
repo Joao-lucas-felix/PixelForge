@@ -23,4 +23,7 @@ public class PixelArt {
     private String mediaType;
     @Column(name = "file_path")
     private String filePath;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }
