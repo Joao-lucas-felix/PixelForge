@@ -2,7 +2,7 @@ package br.com.pixelforge.security.jwt;
 
 
 import br.com.pixelforge.domain.DTOs.TokenDto;
-import br.com.pixelforge.domain.User;
+import br.com.pixelforge.exceptions.InvalidTokenAuthenticationException;
 import br.com.pixelforge.repositories.UserRepository;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
@@ -15,6 +15,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.oauth2.core.OAuth2Error;
+import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -99,8 +101,8 @@ public class JwtTokenProvider {
                 return false;
             }
         } catch (Exception e) {
-            throw new RuntimeException("Error when casting the expiration date of token");
-            //for debug
+            throw new InvalidTokenAuthenticationException
+                    ("Invalid or Expired Token!");
         }
         return true;
     }
