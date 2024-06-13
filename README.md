@@ -14,7 +14,7 @@ Tasks:
 - Observation, i think it's not needed encrypt the file path beacouse we gonna
 trafic the file over the network.
 
-- [ ]  Create the Excpetion Handler, and customized exceptions.
+- [x]  Create the Excpetion Handler, and customized exceptions.
 - [ ]  Create the endpoint that you manage as Pixel Arts, and decide how you will organize the creation of files, the idea is that an API is the storage, so in the beginning, there is no reason to resort to a third-party storage service.
 
 ## Idea: create a color pallete to the pixel arts when register:
