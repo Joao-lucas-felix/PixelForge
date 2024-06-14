@@ -63,6 +63,7 @@ public class SecurityConfig {
                                     .requestMatchers("/v3/api-docs/**").permitAll()
                                     .requestMatchers("/auth/login").permitAll()
                                     .requestMatchers("/api/pixel-art/**").permitAll()
+                                    .requestMatchers("/api/storage-pixel-art/v1/upload").authenticated()
                             ;
 
                         }
