@@ -1,14 +1,22 @@
 package br.com.pixelforge.controllers;
 
+import br.com.pixelforge.services.FileStorageService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.websocket.server.PathParam;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.logging.Logger;
 
 @Tag(name = "Pixel arts", description = "Endpoint for maneging Pixel Arts")
 @RestController
 @RequestMapping("/api/pixel-art")
 public class PixelArtController {
+    private final Logger logger = Logger.getLogger(PixelArtController.class.getName());
+    @Autowired
+    private FileStorageService service;
 
     //non-authenticated
     @GetMapping
@@ -28,9 +36,15 @@ public class PixelArtController {
     //authenticated
     @PostMapping
     public ResponseEntity<String> savePixelArt(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("pixelArtDto") String pixelArtDto
             //Request Body with the data and an art file.
     ){
-        return ResponseEntity.ok("Post works!");
+        logger.info("Storing a file in disk.");
+
+
+        String fileName = service.storageFile(file, "admin");
+        return ResponseEntity.ok(fileName +"  "+ pixelArtDto);
     }
 
 
