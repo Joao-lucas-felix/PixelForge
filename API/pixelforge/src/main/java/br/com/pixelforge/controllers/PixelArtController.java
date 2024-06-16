@@ -1,7 +1,9 @@
 package br.com.pixelforge.controllers;
 
+import br.com.pixelforge.services.PixelArtServices;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.websocket.server.PathParam;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +13,13 @@ import java.util.logging.Logger;
 @RestController
 @RequestMapping("/api/pixel-art/v1")
 public class PixelArtController {
+
+    private final PixelArtServices services;
+
+    @Autowired
+    public PixelArtController(PixelArtServices services) {
+        this.services = services;
+    }
 
     private final Logger logger = Logger.getLogger(PixelArtController.class.getName());
     //non-authenticated
