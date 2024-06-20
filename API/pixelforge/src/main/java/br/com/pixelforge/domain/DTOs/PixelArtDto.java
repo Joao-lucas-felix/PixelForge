@@ -1,10 +1,11 @@
 package br.com.pixelforge.domain.DTOs;
 
+import br.com.pixelforge.domain.User;
 import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -19,6 +20,7 @@ public class PixelArtDto  implements Serializable {
     private String description;
     private String originalFileName;
     private Boolean isFreeUse;
-    private List<String> artTags;
+    private User user;
+    private Set<String> artTags;
 
 }
