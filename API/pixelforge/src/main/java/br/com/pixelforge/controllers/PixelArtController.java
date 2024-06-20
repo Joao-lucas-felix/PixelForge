@@ -1,5 +1,7 @@
 package br.com.pixelforge.controllers;
 
+import br.com.pixelforge.domain.DTOs.PixelArtDto;
+import br.com.pixelforge.domain.PixelArt;
 import br.com.pixelforge.services.PixelArtServices;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.websocket.server.PathParam;
@@ -21,7 +23,7 @@ public class PixelArtController {
         this.services = services;
     }
 
-    private final Logger logger = Logger.getLogger(PixelArtController.class.getName());
+
     //non-authenticated
     @GetMapping
     public ResponseEntity<String> getNewPixelArts(){
@@ -39,11 +41,14 @@ public class PixelArtController {
 
     //authenticated
     @PostMapping
-    public ResponseEntity<String> savePixelArt(
-            // body with the data
-    )
+    public ResponseEntity<PixelArtDto> savePixelArt(
+            @RequestBody PixelArtDto dto
+            )
     {
-        return ResponseEntity.ok("Post works!");
+        PixelArtDto pixelArte = this
+                .services.createPixelArt(dto);
+
+        return ResponseEntity.ok(pixelArte);
     }
 
 

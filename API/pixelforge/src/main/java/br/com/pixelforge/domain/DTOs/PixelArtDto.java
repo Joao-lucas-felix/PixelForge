@@ -20,7 +20,5 @@ public class PixelArtDto  implements Serializable {
     private String description;
     private String originalFileName;
     private Boolean isFreeUse;
-    private User user;
-    private Set<String> artTags;
-
+    private String userName;
 }

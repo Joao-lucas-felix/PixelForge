@@ -34,7 +34,7 @@ public class JwtTokenProvider {
     private RSAPrivateKey privateKey;
     @Value("${security.jwt.public-key:secret}")
     private RSAPublicKey  publicKey;
-    @Value("${security.jwt.expire-length:360000}")
+    @Value("${security.jwt.expire-length:3600000}")
     private Long validityInMiliseconds;
     @Autowired
     private UserDetailsService userDetailsService;

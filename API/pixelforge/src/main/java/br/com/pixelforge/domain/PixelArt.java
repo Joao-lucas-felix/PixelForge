@@ -27,17 +27,14 @@ public class PixelArt {
     @Column(name = "file_path")
     private String filePath;
 
-    private Set<String> artTags;
-
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    public PixelArt(@NotNull PixelArtDto dto){
+    public PixelArt(@NotNull PixelArtDto dto, User user){
         this.name = dto.getName();
         this.description = dto.getDescription();
         this.isFreeUse = dto.getIsFreeUse();
-        this.artTags = dto.getArtTags();
-        this.user = dto.getUser();
+        this.user = user;
     }
 }

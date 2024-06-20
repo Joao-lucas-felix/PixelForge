@@ -31,7 +31,7 @@ security:
   jwt:
     private-key: 'classpath:app.key'
     public-key: 'classpath:app.pubkey'
-    expire-length: 360000
+    expire-length: 3600000
 
 file:
   upload-base-dir: ../pixel-arts/uploaded
