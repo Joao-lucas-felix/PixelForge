@@ -1,6 +1,7 @@
 package br.com.pixelforge.services;
 
 import br.com.pixelforge.configs.FileUploadConfig;
+import br.com.pixelforge.domain.ValidationFilePathInfo;
 import br.com.pixelforge.exceptions.FileStorageException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,5 +58,19 @@ public class FileStorageService {
         }
 
         return fileName;
+    }
+
+    public ValidationFilePathInfo artFileExists(String originalFileName, String username) {
+        try{
+            Path pixelArtFile = Paths.get(this.baseFileStorageLocation.toUri()).resolve(username).toAbsolutePath().normalize()
+                    .resolve(originalFileName);
+            return new ValidationFilePathInfo( Files.exists(pixelArtFile), Paths.get(this.baseFileStorageLocation.toUri())
+                    .resolve(username)
+                    .resolve(originalFileName)
+                    .toString());
+
+        }catch (Exception e){
+            throw new FileStorageException("Error while trying to find the file");
+        }
     }
 }

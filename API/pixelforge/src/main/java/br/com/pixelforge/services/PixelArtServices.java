@@ -1,13 +1,13 @@
 package br.com.pixelforge.services;
 
-import br.com.pixelforge.controllers.PixelArtController;
 import br.com.pixelforge.domain.DTOs.PixelArtDto;
 import br.com.pixelforge.domain.PixelArt;
 import br.com.pixelforge.domain.User;
+import br.com.pixelforge.domain.ValidationFilePathInfo;
+import br.com.pixelforge.exceptions.FileStorageException;
 import br.com.pixelforge.repositories.PixelArtRepository;
 import br.com.pixelforge.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +17,16 @@ import java.util.logging.Logger;
 public class PixelArtServices {
     private final PixelArtRepository pixelArtRepository;
     private final UserRepository userRepository;
+    private final FileStorageService fileServices;
     private final Logger logger = Logger.getLogger(PixelArtServices.class.getName());
 
     @Autowired
-    public PixelArtServices(PixelArtRepository pixelArtRepository, UserRepository userRepository) {
+    public PixelArtServices(PixelArtRepository pixelArtRepository,
+                            UserRepository userRepository,
+                            FileStorageService fileServices) {
         this.pixelArtRepository = pixelArtRepository;
         this.userRepository = userRepository;
+        this.fileServices = fileServices;
     }
 
 
@@ -30,8 +34,8 @@ public class PixelArtServices {
     public boolean validateUser(){
         return true;
     }
-    public boolean artFileExists(){
-        return true;
+    public ValidationFilePathInfo artFileExists(String originalFileName, String username){
+        return  fileServices.artFileExists(originalFileName, username);
     }
 
 
@@ -42,8 +46,13 @@ public class PixelArtServices {
 
 
         PixelArt pixelArtToBePersisted = new PixelArt(dto, user);
-        pixelArtToBePersisted.setFilePath(dto.getOriginalFileName());
+        ValidationFilePathInfo validation = this.artFileExists(dto.getOriginalFileName(), user.getUsername());
 
+
+        if (! validation.getExists())
+            throw new FileStorageException("File Does Not Exists");
+
+        pixelArtToBePersisted.setFilePath(validation.getFilePath());
         PixelArt saved = pixelArtRepository.save(pixelArtToBePersisted);
         logger.info("Creating a Pixel Art with: name: "+saved.getName() +
                 "description: "+ saved.getDescription() +"Is Free Use: " + saved.getIsFreeUse()
