@@ -4,10 +4,13 @@ import br.com.pixelforge.configs.FileUploadConfig;
 import br.com.pixelforge.domain.ValidationFilePathInfo;
 import br.com.pixelforge.exceptions.FileStorageException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -58,6 +61,18 @@ public class FileStorageService {
         }
 
         return fileName;
+    }
+
+    public Resource loadFileAsResource(String filePath, String userName){
+        try {
+            Path file=  this.baseFileStorageLocation.resolve(userName).resolve(filePath).normalize();
+            Resource resource = new UrlResource(file.toUri());
+            if (resource.exists()) return resource;
+            throw new FileStorageException("Error while trying to find the file");
+
+        } catch (Exception e) {
+            throw new FileStorageException("Error while trying to find the file");
+        }
     }
 
     public ValidationFilePathInfo artFileExists(String originalFileName, String username) {
