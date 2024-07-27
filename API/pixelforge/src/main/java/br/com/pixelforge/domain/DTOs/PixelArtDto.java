@@ -1,21 +1,21 @@
 package br.com.pixelforge.domain.DTOs;
 
-import br.com.pixelforge.domain.User;
 import lombok.*;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Set;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
-public class PixelArtDto  implements Serializable {
+@EqualsAndHashCode(callSuper = true)
+public class PixelArtDto extends RepresentationModel<PixelArtDto> implements Serializable {
 
     @Serial
     private static final  long serialVersionUID = 1L;
+    private Long key;
     private String name;
     private String description;
     private String originalFileName;
