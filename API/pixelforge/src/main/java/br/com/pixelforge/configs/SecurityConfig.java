@@ -64,6 +64,7 @@ public class SecurityConfig {
                                     .requestMatchers("/auth/login").permitAll()
                                     .requestMatchers("/api/pixel-art/**").authenticated()
                                     .requestMatchers("/api/storage-pixel-art/v1/upload").authenticated()
+                                    .requestMatchers("/api/storage-pixel-art/v1/downloadFile/**").authenticated()
                             ;
 
                         }
