@@ -34,7 +34,7 @@ public class PixelArtServices {
     public boolean validateUser(){
         return true;
     }
-    public ValidationFilePathInfo artFileExists(String originalFileName, String username){
+    public boolean artFileExists(String originalFileName, String username){
         return  fileServices.artFileExists(originalFileName, username);
     }
 
@@ -49,10 +49,10 @@ public class PixelArtServices {
         ValidationFilePathInfo validation = this.artFileExists(dto.getOriginalFileName(), user.getUsername());
 
 
-        if (! validation.getExists())
+        if (!this.artFileExists(dto.getOriginalFileName(), user.getUsername()))
             throw new FileStorageException("File Does Not Exists");
 
-        pixelArtToBePersisted.setFilePath(validation.getFilePath());
+        pixelArtToBePersisted.setFilePath(dto.getOriginalFileName());
         PixelArt saved = pixelArtRepository.save(pixelArtToBePersisted);
         logger.info("Creating a Pixel Art with: name: "+saved.getName() +
                 "description: "+ saved.getDescription() +"Is Free Use: " + saved.getIsFreeUse()
