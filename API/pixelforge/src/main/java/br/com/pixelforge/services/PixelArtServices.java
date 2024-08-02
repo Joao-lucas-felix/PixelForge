@@ -1,9 +1,9 @@
 package br.com.pixelforge.services;
 
+import br.com.pixelforge.controllers.StorageController;
 import br.com.pixelforge.domain.DTOs.PixelArtDto;
 import br.com.pixelforge.domain.PixelArt;
 import br.com.pixelforge.domain.User;
-import br.com.pixelforge.domain.ValidationFilePathInfo;
 import br.com.pixelforge.exceptions.FileStorageException;
 import br.com.pixelforge.repositories.PixelArtRepository;
 import br.com.pixelforge.repositories.UserRepository;
@@ -12,6 +12,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.logging.Logger;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
 public class PixelArtServices {
@@ -46,7 +49,6 @@ public class PixelArtServices {
 
 
         PixelArt pixelArtToBePersisted = new PixelArt(dto, user);
-        ValidationFilePathInfo validation = this.artFileExists(dto.getOriginalFileName(), user.getUsername());
 
 
         if (!this.artFileExists(dto.getOriginalFileName(), user.getUsername()))
@@ -64,6 +66,10 @@ public class PixelArtServices {
         pixelArtDto.setIsFreeUse(saved.getIsFreeUse());
         pixelArtDto.setUserName(saved.getUser().getUsername());
         pixelArtDto.setOriginalFileName(saved.getFilePath());
+        pixelArtDto.
+                add(linkTo(methodOn(StorageController.class)
+                        .downloadFile(pixelArtDto.getOriginalFileName(), null))
+                        .withRel("Link to load this file"));
         return pixelArtDto;
     }
 }
