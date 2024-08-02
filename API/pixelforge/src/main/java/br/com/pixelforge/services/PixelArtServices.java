@@ -34,9 +34,7 @@ public class PixelArtServices {
 
 
 
-    public boolean validateUser(){
-        return true;
-    }
+
     public boolean artFileExists(String originalFileName, String username){
         return  fileServices.artFileExists(originalFileName, username);
     }
