@@ -75,14 +75,11 @@ public class FileStorageService {
         }
     }
 
-    public ValidationFilePathInfo artFileExists(String originalFileName, String username) {
+    public Boolean artFileExists(String originalFileName, String username) {
         try{
             Path pixelArtFile = Paths.get(this.baseFileStorageLocation.toUri()).resolve(username).toAbsolutePath().normalize()
                     .resolve(originalFileName);
-            return new ValidationFilePathInfo( Files.exists(pixelArtFile), Paths.get(this.baseFileStorageLocation.toUri())
-                    .resolve(username)
-                    .resolve(originalFileName)
-                    .toString());
+            return Files.exists(pixelArtFile);
 
         }catch (Exception e){
             throw new FileStorageException("Error while trying to find the file");
