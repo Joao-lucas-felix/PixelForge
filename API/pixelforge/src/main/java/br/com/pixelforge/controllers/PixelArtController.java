@@ -25,10 +25,7 @@ public class PixelArtController {
 
 
     //non-authenticated
-    @GetMapping
-    public ResponseEntity<String> getNewPixelArts(){
-        return ResponseEntity.ok("Get Works!");
-    }
+
 
     //non-authenticated
     @GetMapping("/searchByName")
