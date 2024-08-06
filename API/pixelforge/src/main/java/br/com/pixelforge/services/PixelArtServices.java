@@ -1,5 +1,6 @@
 package br.com.pixelforge.services;
 
+import br.com.pixelforge.controllers.PixelArtController;
 import br.com.pixelforge.controllers.StorageController;
 import br.com.pixelforge.domain.DTOs.PixelArtDto;
 import br.com.pixelforge.domain.PixelArt;
@@ -8,6 +9,12 @@ import br.com.pixelforge.exceptions.FileStorageException;
 import br.com.pixelforge.repositories.PixelArtRepository;
 import br.com.pixelforge.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -22,22 +29,46 @@ public class PixelArtServices {
     private final UserRepository userRepository;
     private final FileStorageService fileServices;
     private final Logger logger = Logger.getLogger(PixelArtServices.class.getName());
+    private final PagedResourcesAssembler<PixelArtDto> assembler;
 
     @Autowired
     public PixelArtServices(PixelArtRepository pixelArtRepository,
                             UserRepository userRepository,
-                            FileStorageService fileServices) {
+                            FileStorageService fileServices,
+                            PagedResourcesAssembler<PixelArtDto> assembler) {
         this.pixelArtRepository = pixelArtRepository;
         this.userRepository = userRepository;
         this.fileServices = fileServices;
+        this.assembler = assembler;
+    }
+
+    public PagedModel<EntityModel<PixelArtDto>> findAllPixelArts(Pageable pageable){
+        logger.info("Finding all pixel arts");
+        Page<PixelArt> pixelArtsPage = pixelArtRepository.findAll(pageable);
+
+        Page<PixelArtDto> dtosPage = pixelArtsPage.map(pixelArt -> {
+            PixelArtDto pixelArtDto = new PixelArtDto();
+            pixelArtDto.setName(pixelArt.getName());
+            pixelArtDto.setDescription(pixelArt.getDescription());
+            pixelArtDto.setIsFreeUse(pixelArt.getIsFreeUse());
+            pixelArtDto.setUserName(pixelArt.getUser().getUsername());
+            pixelArtDto.setOriginalFileName(pixelArt.getFilePath());
+            pixelArtDto.
+                    add(linkTo(methodOn(StorageController.class)
+                            .downloadFile(pixelArtDto.getOriginalFileName(), null))
+                            .withRel("Link to load this file"));
+            return pixelArtDto;
+        });
+
+        //dtosPage.map(dto -> dto.add()) self relation to add later
+
+        Link link = linkTo(methodOn(PixelArtController.class)
+                .findAll(pageable.getPageNumber(), pageable.getPageSize(), "asc")).withSelfRel();
+
+        return assembler.toModel(dtosPage, link);
     }
 
 
-
-
-    public boolean artFileExists(String originalFileName, String username){
-        return  fileServices.artFileExists(originalFileName, username);
-    }
 
 
     public PixelArtDto createPixelArt(PixelArtDto dto) {
@@ -69,5 +100,8 @@ public class PixelArtServices {
                         .downloadFile(pixelArtDto.getOriginalFileName(), null))
                         .withRel("Link to load this file"));
         return pixelArtDto;
+    }
+    public boolean artFileExists(String originalFileName, String username){
+        return  fileServices.artFileExists(originalFileName, username);
     }
 }
