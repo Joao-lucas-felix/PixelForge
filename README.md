@@ -23,3 +23,4 @@ How i can open and process images in java:
 
 - To open the image: 
 `BufferedImage image = ImageIO.read(fileOrInputStreamOrURL)`
+- To save images in MySql use the type longblob
