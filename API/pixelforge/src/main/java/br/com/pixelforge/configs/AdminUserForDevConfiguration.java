@@ -15,7 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-
+//Essa classe é responsavel por tentar recuperar um usuario admim do banco de dados,
+//Caso não exista ela cria esse usuario e o persiste
 @Configuration
 public class AdminUserForDevConfiguration implements CommandLineRunner{
     private final Logger logger = Logger.getLogger(AdminUserForDevConfiguration.class.getName());
