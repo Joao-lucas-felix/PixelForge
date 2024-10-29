@@ -27,9 +27,6 @@ public class PixelArtController {
 
 
     //non-authenticated
-
-
-    //non-authenticated
     @GetMapping("/searchByName")
     public ResponseEntity<String> getArtByName(
             @PathParam("name")String name
@@ -37,6 +34,17 @@ public class PixelArtController {
     {
         return ResponseEntity.ok("Get by name Wokrs! name in path "+name);
     }
+
+    @GetMapping
+    public ResponseEntity<PagedModel<EntityModel<PixelArtDto>>>
+    findAll(@RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "6") Integer size,
+            @RequestParam(value = "direction", defaultValue = "asc") String direction) {
+        var sort = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort, "name"));
+        return ResponseEntity.ok(services.findAllPixelArts(pageable));
+    }
+
 
     //authenticated
     @PostMapping
@@ -68,13 +76,5 @@ public class PixelArtController {
         return ResponseEntity.ok("Delete Works");
     }
 
-    @GetMapping
-    public ResponseEntity<PagedModel<EntityModel<PixelArtDto>>>
-    findAll(@RequestParam(value = "page", defaultValue = "0") Integer page,
-            @RequestParam(value = "size", defaultValue = "6") Integer size,
-            @RequestParam(value = "direction", defaultValue = "asc") String direction) {
-        var sort = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sort, "name"));
-        return ResponseEntity.ok(services.findAllPixelArts(pageable));
-    }
+
 }
