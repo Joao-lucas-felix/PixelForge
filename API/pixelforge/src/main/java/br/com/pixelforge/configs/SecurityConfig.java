@@ -58,14 +58,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests( authorizeRequests ->
                         {
                             authorizeRequests
-                                    .requestMatchers("/hello").authenticated()
+                                    .requestMatchers("/hello").permitAll()
                                     .requestMatchers("/swagger-ui/**").permitAll()
                                     .requestMatchers("/v3/api-docs/**").permitAll()
                                     .requestMatchers("/auth/login").permitAll()
-                                    .requestMatchers("/api/pixel-art/**").authenticated()
+                                    .requestMatchers("/api/pixel-art/v1").authenticated()
                                     .requestMatchers("/api/storage-pixel-art/v1/upload").authenticated()
                                     .requestMatchers("/api/storage-pixel-art/v1/downloadFile/**").authenticated()
-                                    .requestMatchers("/api/pixel-art/v1").permitAll()
                             ;
 
                         }
