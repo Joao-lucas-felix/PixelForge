@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 @Configuration
 public class OpenApiConfigs {
-    @Bean //diz para o spring que esse é um objeto a ser gerenciado por um spring
+    @Bean
     public OpenAPI customOpenAPI(){
         return new OpenAPI()
                 .info(new Info()
