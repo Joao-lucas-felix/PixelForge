@@ -15,10 +15,7 @@ import java.io.Serializable;
 public class UploadArtFileResponseDto implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-
-    private String fileName;
-    private String fileDownloadUri;
-    private String fileType;
-    private long fileSize;
+    private PixelArtDto pixelArt;
+    private FileInfoDto fileInfo;
 
 }
