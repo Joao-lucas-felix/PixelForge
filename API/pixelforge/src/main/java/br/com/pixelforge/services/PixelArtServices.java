@@ -1,7 +1,7 @@
 package br.com.pixelforge.services;
 
+import br.com.pixelforge.controllers.PixelArtControllerDeprecated;
 import br.com.pixelforge.controllers.PixelArtController;
-import br.com.pixelforge.controllers.StorageController;
 import br.com.pixelforge.domain.DTOs.PixelArtDto;
 import br.com.pixelforge.domain.PixelArt;
 import br.com.pixelforge.domain.User;
@@ -54,7 +54,7 @@ public class PixelArtServices {
             pixelArtDto.setUserName(pixelArt.getUser().getUsername());
             pixelArtDto.setOriginalFileName(pixelArt.getFilePath());
             pixelArtDto.
-                    add(linkTo(methodOn(StorageController.class)
+                    add(linkTo(methodOn(PixelArtController.class)
                             .downloadFile(pixelArtDto.getOriginalFileName(), null))
                             .withRel("Link to load this file"));
             return pixelArtDto;
@@ -62,7 +62,7 @@ public class PixelArtServices {
 
         //dtosPage.map(dto -> dto.add()) self relation to add later
 
-        Link link = linkTo(methodOn(PixelArtController.class)
+        Link link = linkTo(methodOn(PixelArtControllerDeprecated.class)
                 .findAll(pageable.getPageNumber(), pageable.getPageSize(), "asc")).withSelfRel();
 
         return assembler.toModel(dtosPage, link);
@@ -90,18 +90,19 @@ public class PixelArtServices {
                 + "This Pixel Art Is created By: " + saved.getUser().getUsername() );
 
         PixelArtDto pixelArtDto = new PixelArtDto();
+        pixelArtDto.setKey(saved.getId());
         pixelArtDto.setName(saved.getName());
         pixelArtDto.setDescription(saved.getDescription());
         pixelArtDto.setIsFreeUse(saved.getIsFreeUse());
         pixelArtDto.setUserName(saved.getUser().getUsername());
         pixelArtDto.setOriginalFileName(saved.getFilePath());
         pixelArtDto.
-                add(linkTo(methodOn(StorageController.class)
+                add(linkTo(methodOn(PixelArtController.class)
                         .downloadFile(pixelArtDto.getOriginalFileName(), null))
                         .withRel("Link to load this file"));
         return pixelArtDto;
     }
-    public boolean artFileExists(String originalFileName, String username){
+    private boolean artFileExists(String originalFileName, String username){
         return  fileServices.artFileExists(originalFileName, username);
     }
 }
