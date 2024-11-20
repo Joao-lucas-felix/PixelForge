@@ -5,6 +5,7 @@ import br.com.pixelforge.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -62,9 +63,10 @@ public class SecurityConfig {
                                     .requestMatchers("/swagger-ui/**").permitAll()
                                     .requestMatchers("/v3/api-docs/**").permitAll()
                                     .requestMatchers("/auth/login").permitAll()
+
+                                    .requestMatchers(HttpMethod.GET, "/api/pixel-art/v1").permitAll()
                                     .requestMatchers("/api/pixel-art/v1").authenticated()
-                                    .requestMatchers("/api/storage-pixel-art/v1/upload").authenticated()
-                                    .requestMatchers("/api/storage-pixel-art/v1/downloadFile/**").authenticated()
+                                    .requestMatchers("/api/pixel-art/v1/downloadFile/**").authenticated()
                             ;
 
                         }
