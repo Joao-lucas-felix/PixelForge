@@ -1,5 +1,3 @@
-# PixelForge
-
 A site for gamedevs and artists to post and consume pixel arts. To be able to find tilesets, sprites, animations, concept arts and more.
 
 Project Pixel Forge. 
@@ -8,6 +6,8 @@ Project Pixel Forge.
 
 Tasks: 
 
+Done:
+
 - [x]  Understand how to map many entities to one, in the sense that a user will be the owner of many arts.
 - [x]  Implement these entities. Pattern Idea: manege the encrypted file path, so as not to expose details of the API.
 
@@ -15,12 +15,21 @@ Tasks:
 trafic the file over the network.
 
 - [x]  Create the Excpetion Handler, and customized exceptions.
-- [X]  Create the endpoint that you manage as Pixel Arts, and decide how you will organize the creation of files, the idea is that an API is the storage, so in the beginning, there is no reason to resort to a third-party storage service.
+- [x]  Create the endpoint that you manage as Pixel Arts, and decide how you will organize the creation of files, the idea is that an API is the storage, so in the beginning, there is no reason to resort to a third-party storage service.
 
-## Idea: create a color pallete to the pixel arts when register:
+To Do: 
+
+- [ ]  Implements the get functions in the endpoint
+- [ ]  Implementes the update functions in the endpoint
+- [ ]  Implements the delete function in the endpoint
+- [ ]  Writes the tests to the pixel art endpoints, the security endpoints
+
+## Ideas:
+
+- Create a color pallete to the pixel arts when register:
+- Creates thubnails to the pixel arts.
 
 How i can open and process images in java: 
 
 - To open the image: 
 `BufferedImage image = ImageIO.read(fileOrInputStreamOrURL)`
-- To save images in MySql use the type longblob
