@@ -9,6 +9,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -62,6 +67,25 @@ public class PixelArtController {
         ));
 
     }
+
+
+    @GetMapping
+    public ResponseEntity<PagedModel<EntityModel<PixelArtDto>>>
+    findAll(@RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "6") Integer size,
+            @RequestParam(value = "direction", defaultValue = "asc") String direction) {
+        var sort = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort, "name"));
+        return ResponseEntity.ok(pixelArtServices.findAllPixelArts(pageable));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PixelArtDto>
+    findById(@PathVariable Long id) {
+        return ResponseEntity.ok(pixelArtServices.findById(id));
+    }
+
+
 
 
     @GetMapping("/downloadFile/{filename:.+}")
