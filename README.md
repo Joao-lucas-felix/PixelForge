@@ -25,7 +25,7 @@ trafic the file over the network.
 
 To Do: 
 
-- [ ]  Implements the get functions in the endpoint
+- [ ]  Implements the get functions in the endpoint ( implment the method "get by name") 
 - [ ]  Implementes the update functions in the endpoint
 - [ ]  Implements the delete function in the endpoint
 - [ ]  Writes the tests to the pixel art endpoints, the security endpoints
