@@ -63,10 +63,12 @@ public class SecurityConfig {
                                     .requestMatchers("/swagger-ui/**").permitAll()
                                     .requestMatchers("/v3/api-docs/**").permitAll()
                                     .requestMatchers("/auth/login").permitAll()
-
+                                    //Get Methods
                                     .requestMatchers(HttpMethod.GET, "/api/pixel-art/v1").permitAll()
+                                    .requestMatchers(HttpMethod.GET, "/api/pixel-art/v1/*").permitAll()
+                                    .requestMatchers(HttpMethod.GET,"/api/pixel-art/v1/downloadFile/**").authenticated()
+
                                     .requestMatchers("/api/pixel-art/v1").authenticated()
-                                    .requestMatchers("/api/pixel-art/v1/downloadFile/**").authenticated()
                             ;
 
                         }
