@@ -1,6 +1,7 @@
 package br.com.pixelforge.exceptions.handler;
 
 import br.com.pixelforge.exceptions.ExceptionResponse;
+import br.com.pixelforge.exceptions.NotFoundPixelArtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +36,16 @@ extends ResponseEntityExceptionHandler
                 "Problem in authentication."
         );
         return new ResponseEntity<>(exceptionResponse, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(NotFoundPixelArtException.class)
+    ResponseEntity<ExceptionResponse> handleNotFoundPixelArtException() {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date(),
+                "Not found pixel Art",
+                "Problem while trying to get this pixel art"
+        );
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
 
 }
