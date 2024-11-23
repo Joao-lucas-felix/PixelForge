@@ -22,10 +22,10 @@ trafic the file over the network.
 
 - [x]  Create the Excpetion Handler, and customized exceptions.
 - [x]  Create the endpoint that you manage as Pixel Arts, and decide how you will organize the creation of files, the idea is that an API is the storage, so in the beginning, there is no reason to resort to a third-party storage service.
+- [x]  Implements the get functions in the endpoint ( implment the method "get by name") 
 
 To Do: 
 
-- [ ]  Implements the get functions in the endpoint ( implment the method "get by name") 
 - [ ]  Implementes the update functions in the endpoint
 - [ ]  Implements the delete function in the endpoint
 - [ ]  Writes the tests to the pixel art endpoints, the security endpoints
