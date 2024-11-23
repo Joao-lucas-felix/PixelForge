@@ -86,6 +86,19 @@ public class PixelArtController {
     }
 
 
+    @GetMapping("/searchByName/{name}")
+    public ResponseEntity<PagedModel<EntityModel<PixelArtDto>>>
+    findByName(@PathVariable String name,
+               @RequestParam(value = "page", defaultValue = "0") Integer page,
+               @RequestParam(value = "size", defaultValue = "6") Integer size,
+               @RequestParam(value = "direction", defaultValue = "asc") String direction
+    ) {
+        var sort = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort, "name"));
+        return ResponseEntity.ok(pixelArtServices.findByName(name, pageable));
+    }
+
+
 
 
     @GetMapping("/downloadFile/{filename:.+}")
