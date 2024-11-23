@@ -135,4 +135,35 @@ public class PixelArtServices {
     private boolean artFileExists(String originalFileName, String username){
         return  fileServices.artFileExists(originalFileName, username);
     }
+
+    public PagedModel<EntityModel<PixelArtDto>> findByName(String name, Pageable pageable) {
+        log.info("Finding all pixel arts");
+        Page<PixelArt> pixelArtsPage = pixelArtRepository.findByName(name, pageable);
+
+        Page<PixelArtDto> dtosPage = pixelArtsPage.map(pixelArt -> {
+            PixelArtDto pixelArtDto = new PixelArtDto();
+            pixelArtDto.setKey(pixelArt.getId());
+            pixelArtDto.setName(pixelArt.getName());
+            pixelArtDto.setDescription(pixelArt.getDescription());
+            pixelArtDto.setIsFreeUse(pixelArt.getIsFreeUse());
+            pixelArtDto.setUserName(pixelArt.getUser().getUsername());
+            pixelArtDto.setOriginalFileName(pixelArt.getFilePath());
+            pixelArtDto.
+                    add(linkTo(methodOn(PixelArtController.class)
+                            .downloadFile(pixelArtDto.getOriginalFileName(), null))
+                            .withRel("Link to load this file"));
+            pixelArtDto.
+                    add(linkTo(methodOn(PixelArtController.class)
+                            .findById(pixelArt.getId()))
+                            .withSelfRel());
+            return pixelArtDto;
+        });
+
+        //dtosPage.map(dto -> dto.add()) self relation to add later
+
+        Link link = linkTo(methodOn(PixelArtController.class)
+                .findAll(pageable.getPageNumber(), pageable.getPageSize(), "asc")).withSelfRel();
+
+        return assembler.toModel(dtosPage, link);
+    }
 }
