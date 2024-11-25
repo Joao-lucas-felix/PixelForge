@@ -68,6 +68,79 @@ public class PixelArtController {
 
     }
 
+    @PutMapping("/{id}/file")
+    public ResponseEntity<String> updatePixelArt(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("name") String name,
+            @RequestParam("description") String description,
+            @RequestParam("isFreeUse") Boolean isFreeUse,
+            @PathVariable("id") Long id
+    ){
+        log.info("Update an Pixel art with File, ID: {}",id);
+
+//        //Getting the user with the security context
+//        var userName = SecurityContextHolder.getContext().getAuthentication().getName();
+//
+//        log.info("Storing the file in disk.");
+//
+//        String fileName = service.storageFile(file,userName );
+//        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+//                .path("api/file/v1/download/"+fileName).toUriString();
+//
+//        var fileInfoDto = new FileInfoDto(fileName,
+//                fileDownloadUri, file.getContentType(), file.getSize());
+//
+//        log.info("Storing the pixel art info in the DataBase");
+//        log.info("Name {}", name);
+//        log.info("Description {}", description);
+//        log.info("Is Free Use {}", isFreeUse);
+//
+//        var createDto = new PixelArtDto(null,  name, description,
+//                file.getOriginalFilename(), isFreeUse, userName);
+//        var pixelArtResponseDto = pixelArtServices.createPixelArt(createDto);
+//
+//        return ResponseEntity.ok(new UploadArtFileResponseDto(
+//                pixelArtResponseDto, fileInfoDto
+//        ));
+
+        return ResponseEntity.ok("Updated an pixel art with file");
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updatePixelArt(
+            @RequestParam("name") String name,
+            @RequestParam("description") String description,
+            @RequestParam("isFreeUse") Boolean isFreeUse,
+            @PathVariable("id") Long id
+    ){
+        log.info("Update an pixel art without file! ID: {}",id);
+
+//        //Getting the user with the security context
+//        var userName = SecurityContextHolder.getContext().getAuthentication().getName();
+//
+//        log.info("Storing the file in disk.");
+//
+//        String fileName = service.storageFile(file,userName );
+//        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+//                .path("api/file/v1/download/"+fileName).toUriString();
+//
+//        var fileInfoDto = new FileInfoDto(fileName,
+//                fileDownloadUri, file.getContentType(), file.getSize());
+//
+//        log.info("Storing the pixel art info in the DataBase");
+//        log.info("Name {}", name);
+//        log.info("Description {}", description);
+//        log.info("Is Free Use {}", isFreeUse);
+//
+//        var createDto = new PixelArtDto(null,  name, description,
+//                file.getOriginalFilename(), isFreeUse, userName);
+//        var pixelArtResponseDto = pixelArtServices.createPixelArt(createDto);
+//
+//        return ResponseEntity.ok(new UploadArtFileResponseDto(
+//                pixelArtResponseDto, fileInfoDto
+//        ));
+        return ResponseEntity.ok("Updated an pixel art without file");
+    }
 
     @GetMapping
     public ResponseEntity<PagedModel<EntityModel<PixelArtDto>>>
