@@ -69,6 +69,9 @@ public class SecurityConfig {
                                     .requestMatchers(HttpMethod.GET, "/api/pixel-art/v1/searchByName/*").permitAll()
                                     .requestMatchers(HttpMethod.GET,"/api/pixel-art/v1/downloadFile/**").authenticated()
 
+                                    .requestMatchers(HttpMethod.PUT,"/api/pixel-art/v1/**").authenticated()
+                                    .requestMatchers(HttpMethod.PUT,"/api/pixel-art/v1/**/file").authenticated()
+
                                     .requestMatchers("/api/pixel-art/v1").authenticated()
                             ;
 
