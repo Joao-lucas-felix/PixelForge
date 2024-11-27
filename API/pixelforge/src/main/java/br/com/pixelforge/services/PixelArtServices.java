@@ -166,4 +166,32 @@ public class PixelArtServices {
 
         return assembler.toModel(dtosPage, link);
     }
+
+    public PixelArtDto updateWithoutFile(Long id, String name, String description, Boolean isFreeUse) {
+       log.info("Get the pixel art with ID: {} in the database", id);
+        Optional<PixelArt> byId = pixelArtRepository.findById(id);
+        PixelArt pixelArt = byId.orElseThrow(
+                () -> new NotFoundPixelArtException("Not found the pixel art with this id !")
+        );
+
+        log.info("Updating the art! ");
+        pixelArt.setName(name);
+        pixelArt.setDescription(description);
+        pixelArt.setIsFreeUse(isFreeUse);
+
+        PixelArt saved = pixelArtRepository.save(pixelArt);
+
+        PixelArtDto response = new PixelArtDto(pixelArt.getId(), pixelArt.getName(),
+                pixelArt.getDescription(), pixelArt.getFilePath(), pixelArt.getIsFreeUse(),
+                pixelArt.getUser().getUsername());
+        response.
+                add(linkTo(methodOn(PixelArtController.class)
+                        .downloadFile(response.getOriginalFileName(), null))
+                        .withRel("Link to load this file"));
+        response.
+                add(linkTo(methodOn(PixelArtController.class)
+                        .findById(pixelArt.getId()))
+                        .withSelfRel());
+        return response;
+    }
 }
