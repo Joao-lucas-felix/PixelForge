@@ -194,4 +194,39 @@ public class PixelArtServices {
                         .withSelfRel());
         return response;
     }
+
+    public PixelArtDto updateWithFile(PixelArtDto createDto) {
+        log.info("Get the pixel art with ID: {} in the database", createDto.getKey());
+        Optional<PixelArt> byId = pixelArtRepository.findById(createDto.getKey());
+        PixelArt pixelArt = byId.orElseThrow(
+                () -> new NotFoundPixelArtException("Not found the pixel art with this id !")
+        );
+
+        log.info("Updating the art! ");
+        pixelArt.setName(createDto.getName());
+        pixelArt.setDescription(createDto.getDescription());
+        pixelArt.setIsFreeUse(createDto.getIsFreeUse());
+        pixelArt.setFilePath(createDto.getOriginalFileName());
+
+        PixelArt saved = pixelArtRepository.save(pixelArt);
+
+        PixelArtDto response = new PixelArtDto(saved.getId(), saved.getName(),
+                saved.getDescription(), pixelArt.getFilePath(), saved.getIsFreeUse(),
+                saved.getUser().getUsername());
+        response.
+                add(linkTo(methodOn(PixelArtController.class)
+                        .downloadFile(response.getOriginalFileName(), null))
+                        .withRel("Link to load this file"));
+        response.
+                add(linkTo(methodOn(PixelArtController.class)
+                        .findById(pixelArt.getId()))
+                        .withSelfRel());
+        return response;
+    }
+
+    public String getOldFileName(Long id) {
+        return pixelArtRepository.findById(id).orElseThrow(
+                () -> new NotFoundPixelArtException("Not found the pixel art with this id !")
+        ).getFilePath();
+    }
 }
