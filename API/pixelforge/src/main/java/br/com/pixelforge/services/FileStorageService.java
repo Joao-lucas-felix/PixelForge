@@ -61,6 +61,25 @@ public class FileStorageService {
         return fileName;
     }
 
+    public void deleteAnFile (String originalFileName,String userName){
+        String fileName = StringUtils.cleanPath(Objects.requireNonNull(originalFileName));
+        try {
+            //Here is going be the media type verification
+
+
+            //creates the user dir
+            Path useDirResolved = Paths.get(this.baseFileStorageLocation.toUri())
+                    .resolve(userName).toAbsolutePath().normalize();
+
+            //saves the art.
+            Path targetLocation = useDirResolved.resolve(fileName);
+            Files.delete(targetLocation);
+
+        }catch (Exception e) {
+            throw new FileStorageException("Could not delete the file: "+fileName);
+        }
+    }
+
     public Resource loadFileAsResource(String filePath, String userName){
         try {
             Path file=  this.baseFileStorageLocation.resolve(userName).resolve(filePath).normalize();

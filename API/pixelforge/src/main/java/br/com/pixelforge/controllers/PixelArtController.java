@@ -78,7 +78,31 @@ public class PixelArtController {
     ){
         log.info("Update an Pixel art with File, ID: {}",id);
 
-        return ResponseEntity.ok(null);
+        //Getting the user with the security context
+        var userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        var oldFileName = pixelArtServices.getOldFileName(id);
+        service.deleteAnFile(oldFileName, userName);
+        log.info("Storing the new file in disk.");
+
+        String fileName = service.storageFile(file,userName );
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("api/file/v1/download/"+fileName).toUriString();
+
+        var fileInfoDto = new FileInfoDto(fileName,
+                fileDownloadUri, file.getContentType(), file.getSize());
+
+        log.info("Storing the pixel art info in the DataBase");
+        log.info("Name {}", name);
+        log.info("Description {}", description);
+        log.info("Is Free Use {}", isFreeUse);
+
+        var createDto = new PixelArtDto(id,  name, description,
+                file.getOriginalFilename(), isFreeUse, userName);
+        var pixelArtResponseDto = pixelArtServices.updateWithFile(createDto);
+
+        return ResponseEntity.ok(new UploadArtFileResponseDto(
+                pixelArtResponseDto, fileInfoDto
+        ));
     }
 
     @PutMapping("/{id}")
