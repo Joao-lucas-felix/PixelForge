@@ -39,3 +39,9 @@ How i can open and process images in java:
 
 - To open the image: 
 `BufferedImage image = ImageIO.read(fileOrInputStreamOrURL)`
+
+### WireFrames:
+#### Login Flux initial concept:
+<p align="center">
+  <img src="Assets/Wireframes/wirefram-login-flux.png" alt="Wirefram of initial login flux" width="800" height="600">
+</p>
