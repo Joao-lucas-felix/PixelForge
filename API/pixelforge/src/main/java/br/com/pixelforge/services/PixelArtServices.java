@@ -16,9 +16,11 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -228,5 +230,32 @@ public class PixelArtServices {
         return pixelArtRepository.findById(id).orElseThrow(
                 () -> new NotFoundPixelArtException("Not found the pixel art with this id !")
         ).getFilePath();
+    }
+
+    public String delete(Long id) {
+        //Loading the data to verify and join the file path
+        var pixelArt = pixelArtRepository.findById(id)
+                .orElseThrow(() -> new NotFoundPixelArtException("The pixel art with id: "+ id+ " do not exits!"));
+        var userName = SecurityContextHolder.getContext().getAuthentication().getName();
+
+
+
+        // Deleting the file
+        fileServices.deleteAnFile(pixelArt.getFilePath(), userName);
+
+        // Deleting the entity in the database
+        pixelArtRepository.delete(pixelArt);
+
+        return "The Pixel With ID: " + id + " Are Delete Successfully";
+    }
+
+    // canChangeEntity checks if the user is able to change te pixel art
+    // the user is able to change if is the pixel art owner or is an ADMIM
+    public boolean canChangeEntity(Long id, String username, Collection<? extends GrantedAuthority> authorities){
+        var entity = pixelArtRepository.findById(id)
+                .orElseThrow(()-> new NotFoundPixelArtException("The pixel art with id: "+ id+ " do not exits!"));
+
+        return entity.getUser().getUsername().equals(username) ||
+                authorities.stream().anyMatch(a -> a.getAuthority().equals("ADMIM"));
     }
 }
