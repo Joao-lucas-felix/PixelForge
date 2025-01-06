@@ -9,7 +9,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serial;
-import java.io.Serializable;
 import java.util.*;
 
 @Entity
@@ -19,7 +18,7 @@ import java.util.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class User implements UserDetails, Serializable {
+public class User implements UserDetails {
 
     @Serial
     private static final long serialVersionUID = 1L;

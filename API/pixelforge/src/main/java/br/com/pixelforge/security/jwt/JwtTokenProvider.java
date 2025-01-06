@@ -15,8 +15,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.oauth2.core.OAuth2Error;
-import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -63,7 +61,7 @@ public class JwtTokenProvider {
     private String getAccessToken(String userId, Date now, Date validity) {
         String issueUrl = ServletUriComponentsBuilder
                 .fromCurrentContextPath().build().toUriString();
-
+        System.out.println(issueUrl);
         var claims = JwtClaimsSet.builder()
                 .issuer("pixelforge")
                 .issuedAt(Instant.ofEpochMilli(now.getTime()))

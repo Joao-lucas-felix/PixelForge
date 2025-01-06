@@ -9,7 +9,6 @@ import br.com.pixelforge.exceptions.NotFoundPixelArtException;
 import br.com.pixelforge.repositories.PixelArtRepository;
 import br.com.pixelforge.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -33,7 +32,6 @@ public class PixelArtServices {
     private final FileStorageService fileServices;
     private final PagedResourcesAssembler<PixelArtDto> assembler;
 
-    @Autowired
     public PixelArtServices(PixelArtRepository pixelArtRepository,
                             UserRepository userRepository,
                             FileStorageService fileServices,
@@ -183,16 +181,16 @@ public class PixelArtServices {
 
         PixelArt saved = pixelArtRepository.save(pixelArt);
 
-        PixelArtDto response = new PixelArtDto(pixelArt.getId(), pixelArt.getName(),
-                pixelArt.getDescription(), pixelArt.getFilePath(), pixelArt.getIsFreeUse(),
-                pixelArt.getUser().getUsername());
+        PixelArtDto response = new PixelArtDto(saved.getId(), saved.getName(),
+        saved.getDescription(), saved.getFilePath(), saved.getIsFreeUse(),
+                saved.getUser().getUsername());
         response.
                 add(linkTo(methodOn(PixelArtController.class)
                         .downloadFile(response.getOriginalFileName(), null))
                         .withRel("Link to load this file"));
         response.
                 add(linkTo(methodOn(PixelArtController.class)
-                        .findById(pixelArt.getId()))
+                        .findById(saved.getId()))
                         .withSelfRel());
         return response;
     }

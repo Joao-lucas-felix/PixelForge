@@ -2,7 +2,6 @@ package br.com.pixelforge.services;
 
 import br.com.pixelforge.configs.FileUploadConfig;
 import br.com.pixelforge.exceptions.FileStorageException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,6 @@ public class FileStorageService {
 
     private final Path baseFileStorageLocation;
 
-    @Autowired
     public FileStorageService(FileUploadConfig config) {
         this.baseFileStorageLocation = Paths.get(config.getUploadBaseDir())
                 .toAbsolutePath()
