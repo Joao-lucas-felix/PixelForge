@@ -4,7 +4,6 @@ import br.com.pixelforge.domain.DTOs.PixelArtDto;
 import br.com.pixelforge.services.PixelArtServices;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.websocket.server.PathParam;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -20,7 +19,7 @@ public class PixelArtControllerDeprecated {
 
     private final PixelArtServices services;
 
-    @Autowired
+    
     public PixelArtControllerDeprecated(PixelArtServices services) {
         this.services = services;
     }
